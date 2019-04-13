@@ -24,9 +24,12 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
     private IOnDataGotListener onDataGotListener;
     private Retrofit retrofit;
 
+    private int offset;
+
     @Override
-    public void getData(IOnDataGotListener listener) {
+    public void getData(int offset, IOnDataGotListener listener) {
         Log.d(PokemonApplication.TAG, "getData");
+        this.offset = offset;
         this.onDataGotListener = listener;
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://pokeapi.co/api/v2/")
@@ -39,15 +42,15 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
     private void loadDataFromNetwork() {
         Log.d(PokemonApplication.TAG, "loadDataFromNetwork");
         PokeapiService service = retrofit.create(PokeapiService.class);
-        Call<PokemonResult> pokemonResultCall = service.getPokemonList();
+        Call<PokemonResult> pokemonResultCall = service.getPokemonList(20, offset);
 
         Log.d(PokemonApplication.TAG, "Calling...");
-        pokemonResultCall.enqueue(new Callback<PokemonResult>(){
+        pokemonResultCall.enqueue(new Callback<PokemonResult>() {
 
             @Override
             public void onResponse(Call<PokemonResult> call, Response<PokemonResult> response) {
                 Log.d(PokemonApplication.TAG, "onResponse");
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
 
                     PokemonResult pokemonResult = response.body();
                     ArrayList<Pokemon> pokemons = pokemonResult.getResults();

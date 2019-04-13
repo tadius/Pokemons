@@ -4,7 +4,7 @@ import com.tadiuzzz.pokemons.presenter.IOnDataGotListener;
 
 public interface IRepositoryPokemonList {
 
-    void getData(IOnDataGotListener listener);
+    void getData(int offset, IOnDataGotListener listener);
 
 }
 

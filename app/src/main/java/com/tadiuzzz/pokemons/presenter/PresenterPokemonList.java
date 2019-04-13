@@ -16,15 +16,19 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
 
     private IViewPokemonList view;
     private IRepositoryPokemonList repository;
+    private boolean isLoading = false;
+    private int offset;
 
     public PresenterPokemonList(){
         Log.d(PokemonApplication.TAG, "PresenterPokemonList");
+        offset = 0;
         repository = new RepositoryPokemonList();
     }
 
     private void loadData() {
         Log.d(PokemonApplication.TAG, "loadData");
-        repository.getData(this);
+        isLoading = true;
+        repository.getData(offset, this);
     }
 
     @Override
@@ -42,6 +46,18 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
     @Override
     public void onScrolled(GridLayoutManager layoutManager) {
         Log.d(PokemonApplication.TAG, "onScrolled");
+        int visibleItemCount = layoutManager.getChildCount();
+        int totalItemCount = layoutManager.getItemCount();
+        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+        if (!isLoading) {
+            if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                    && firstVisibleItemPosition >= 0
+                    && totalItemCount >= offset ) {
+                offset+=20;
+                loadData();
+            }
+        }
     }
 
     @Override
@@ -59,5 +75,6 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
     @Override
     public void OnEndSettingUpViewCallback() {
         Log.d(PokemonApplication.TAG, "OnEndSettingUpViewCallback");
+        isLoading = false;
     }
 }

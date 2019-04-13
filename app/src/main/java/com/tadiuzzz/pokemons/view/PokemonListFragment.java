@@ -38,6 +38,7 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList {
     private IPresenterPokemonList presenterPokemonList;
     private RecyclerView rvPokemonList;
     private PokemonListAdapter pokemonListAdapter;
+    private GridLayoutManager layoutManager;
     private Context context;
 
     @Nullable
@@ -58,8 +59,20 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList {
         pokemonListAdapter = new PokemonListAdapter(context);
         rvPokemonList.setAdapter(pokemonListAdapter);
         rvPokemonList.setHasFixedSize(true);
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+        layoutManager = new GridLayoutManager(getActivity(), 3);
         rvPokemonList.setLayoutManager(layoutManager);
+        rvPokemonList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                presenterPokemonList.onScrolled(layoutManager);
+            }
+        });
 
         presenterPokemonList.viewIsReady(this);
     }
