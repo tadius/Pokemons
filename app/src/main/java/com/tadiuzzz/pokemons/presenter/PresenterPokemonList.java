@@ -28,6 +28,7 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
     private void loadData() {
         Log.d(PokemonApplication.TAG, "loadData");
         isLoading = true;
+        view.setRefreshing(isLoading);
         repository.getData(offset, this);
     }
 

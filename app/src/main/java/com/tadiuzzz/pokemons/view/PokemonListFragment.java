@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.tadiuzzz.pokemons.PokemonApplication;
 import com.tadiuzzz.pokemons.R;
@@ -60,6 +61,24 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList {
         rvPokemonList.setAdapter(pokemonListAdapter);
         rvPokemonList.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getActivity(), 3);
+
+//        Растягиваем progress bar на всю ширину экрана:
+        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch(pokemonListAdapter.getItemViewType(position)){
+                    case R.layout.item_loading:
+                        return 3;
+
+                    case R.layout.item_pokemon:
+                        return 1;
+
+                    default:
+                        return 1;
+                }
+            }
+        });
+
         rvPokemonList.setLayoutManager(layoutManager);
         rvPokemonList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -79,6 +98,7 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList {
 
     @Override
     public void setViewData(ArrayList<Pokemon> pokemons, IOnEndSettingUpViewListener listener) {
+        pokemonListAdapter.removeLoading();
         Log.d(PokemonApplication.TAG, "setViewData");
         pokemonListAdapter.addListOfPokemons(pokemons);
         listener.OnEndSettingUpViewCallback();
@@ -87,11 +107,14 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList {
     @Override
     public void setRefreshing(boolean isRefreshing) {
         Log.d(PokemonApplication.TAG, "setRefreshing");
-
+        pokemonListAdapter.addLoading();
     }
 
     @Override
     public void showError(String error) {
         Log.d(PokemonApplication.TAG, "showError");
+        pokemonListAdapter.removeLoading();
     }
+
+
 }
