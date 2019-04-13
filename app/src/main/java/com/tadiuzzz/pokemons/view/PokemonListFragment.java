@@ -1,5 +1,6 @@
 package com.tadiuzzz.pokemons.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,12 +38,14 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList {
     private IPresenterPokemonList presenterPokemonList;
     private RecyclerView rvPokemonList;
     private PokemonListAdapter pokemonListAdapter;
+    private Context context;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pokemon_list, container, false);
         Log.d(PokemonApplication.TAG, "onCreateView");
+        context = this.getActivity();
         initView(view);
         return view;
     }
@@ -52,7 +55,7 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList {
         presenterPokemonList = new PresenterPokemonList();
 
         rvPokemonList = (RecyclerView) view.findViewById(R.id.rvPokemonList);
-        pokemonListAdapter = new PokemonListAdapter();
+        pokemonListAdapter = new PokemonListAdapter(context);
         rvPokemonList.setAdapter(pokemonListAdapter);
         rvPokemonList.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);

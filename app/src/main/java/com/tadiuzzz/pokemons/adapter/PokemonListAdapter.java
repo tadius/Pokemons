@@ -1,5 +1,6 @@
 package com.tadiuzzz.pokemons.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.tadiuzzz.pokemons.PokemonApplication;
 import com.tadiuzzz.pokemons.R;
 import com.tadiuzzz.pokemons.model.Pokemon;
@@ -18,8 +21,10 @@ import java.util.ArrayList;
 public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.ViewHolder> {
 
     private ArrayList<Pokemon> pokemons;
+    private Context context;
 
-    public PokemonListAdapter() {
+    public PokemonListAdapter(Context context) {
+        this.context = context;
         pokemons = new ArrayList<>();
         Log.d(PokemonApplication.TAG, "PokemonListAdapter");
     }
@@ -36,6 +41,12 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Pokemon pokemon = pokemons.get(position);
         viewHolder.tvPokemonName.setText(pokemon.getName());
+
+        Glide.with(context)
+                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getNumber() + ".png")
+        .centerCrop()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(viewHolder.ivPokemonPicture);
         Log.d(PokemonApplication.TAG, "onBindViewHolder");
 
     }
