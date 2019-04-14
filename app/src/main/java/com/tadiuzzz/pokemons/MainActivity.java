@@ -12,6 +12,8 @@ import com.tadiuzzz.pokemons.model.PokemonCharacteristics;
 import com.tadiuzzz.pokemons.model.Sprites;
 import com.tadiuzzz.pokemons.model.Stats;
 import com.tadiuzzz.pokemons.network.PokeapiService;
+import com.tadiuzzz.pokemons.view.INavigator;
+import com.tadiuzzz.pokemons.view.PokemonAboutFragment;
 import com.tadiuzzz.pokemons.view.PokemonListFragment;
 
 import java.util.ArrayList;
@@ -24,9 +26,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.tadiuzzz.pokemons.PokemonApplication.TAG;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements INavigator {
 
 //    private Retrofit retrofit;
+
+    private FragmentManager fragmentManager;
+    public static final String POKEMON_LIST_FRAGMENT = "PokemonListFragment";
+    public static final String POKEMON_ABOUT_FRAGMENT = "PokemonAboutFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +96,41 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+        fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
+        if (fragment == null) {
+            Log.d(TAG, "fragment = null");
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = new PokemonListFragment();
-        fragmentManager
-                .beginTransaction()
-                .add(R.id.fragmentContainer, fragment)
-                .commit();
+            navigateTo(POKEMON_LIST_FRAGMENT, null);
+        }
+    }
+
+    @Override
+    public void navigateTo(String nameOfFragment, Bundle bundle) {
+
+        Fragment fragment;
+        fragmentManager = getSupportFragmentManager();
+
+        switch (nameOfFragment) {
+            case POKEMON_LIST_FRAGMENT:
+                fragment = new PokemonListFragment();
+                fragment.setArguments(bundle);
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .commit();
+                break;
+            case POKEMON_ABOUT_FRAGMENT:
+                fragment = new PokemonAboutFragment();
+                fragment.setArguments(bundle);
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, fragment)
+                        .addToBackStack(POKEMON_ABOUT_FRAGMENT)
+                        .commit();
+                break;
+        }
+
 
     }
 }

@@ -13,6 +13,9 @@ public interface PokeapiService {
     @GET("pokemon")
     Call<PokemonResult> getPokemonList(@Query("limit") int limit, @Query("offset") int offset);
 
-    @GET("pokemon/{number}")
-    Call<PokemonCharacteristics> getAbilitiesList(@Path("number") int number);
+//    @GET("pokemon/{number}")
+//    Call<PokemonCharacteristics> getAbilitiesList(@Path("number") int number);
+
+    @GET("pokemon/{name}")
+    Call<PokemonCharacteristics> getAbilitiesList(@Path("name") String name);
 }

@@ -1,6 +1,8 @@
 package com.tadiuzzz.pokemons.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,20 +17,28 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.tadiuzzz.pokemons.PokemonApplication;
 import com.tadiuzzz.pokemons.R;
+import com.tadiuzzz.pokemons.model.ComparePokemon;
 import com.tadiuzzz.pokemons.model.Pokemon;
+import com.tadiuzzz.pokemons.view.IOnPokemonClickListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.MyViewHolder> {
 
     private ArrayList<Pokemon> pokemons;
+    private ArrayList<Pokemon> pokemonsBuffer;
+    private int counter;
     private boolean isLoadingAdded;
     private Context context;
+    private IOnPokemonClickListener onPokemonClickListener;
 
-    public PokemonListAdapter(Context context) {
+    public PokemonListAdapter(Context context, IOnPokemonClickListener onPokemonClickListener) {
         this.context = context;
+        this.onPokemonClickListener = onPokemonClickListener;
         pokemons = new ArrayList<>();
-        Log.d(PokemonApplication.TAG, "PokemonListAdapter");
+        pokemonsBuffer = new ArrayList<Pokemon>();
+//        Log.d(PokemonApplication.TAG, "PokemonListAdapter");
     }
 
     abstract class MyViewHolder extends RecyclerView.ViewHolder {
@@ -44,10 +54,18 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
         private ImageView ivPokemonPicture;
         private TextView tvPokemonName;
 
-        public PokemonsViewHolder(@NonNull View itemView) {
+        public PokemonsViewHolder(@NonNull final View itemView) {
             super(itemView);
             ivPokemonPicture = (ImageView) itemView.findViewById(R.id.ivPokemonPicture);
             tvPokemonName = (TextView) itemView.findViewById(R.id.tvPokemonName);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Pokemon pokemon = pokemons.get(getLayoutPosition());
+                    onPokemonClickListener.onPokemonClick(pokemon);
+                }
+            });
         }
 
         @Override
@@ -64,7 +82,9 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
                         .into(ivPokemonPicture);
             }
 
-            Log.d(PokemonApplication.TAG, "bind PokemonsViewHolder");
+
+
+//            Log.d(PokemonApplication.TAG, "bind PokemonsViewHolder");
         }
     }
 
@@ -106,12 +126,12 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int position) {
         viewHolder.bind(position);
-        Log.d(PokemonApplication.TAG, "onBindViewHolder");
+//        Log.d(PokemonApplication.TAG, "onBindViewHolder");
     }
 
     @Override
     public int getItemCount() {
-        Log.d(PokemonApplication.TAG, "getItemCount");
+//        Log.d(PokemonApplication.TAG, "getItemCount");
         if (isLoadingAdded)
             return pokemons.size() + 1;
         else return pokemons.size();
@@ -139,9 +159,22 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     }
 
     public void addPokemonToList(Pokemon pokemon) {
+        //добавление покемонов пачкой по 20 шт
+        /*counter++;
+        this.pokemonsBuffer.add(pokemon);
+        if (counter>=20) {
+            ComparePokemon comparePokemon = new ComparePokemon();
+            this.pokemons.addAll(pokemonsBuffer);
+            Collections.sort(pokemons, comparePokemon);
+            pokemonsBuffer.clear();
+        }*/
+
         this.pokemons.add(pokemon);
+        ComparePokemon comparePokemon = new ComparePokemon();
+        Collections.sort(pokemons, comparePokemon);
+
         notifyDataSetChanged();
-        Log.d(PokemonApplication.TAG, "addPokemonToList");
+//        Log.d(PokemonApplication.TAG, "addPokemonToList");
 
     }
 

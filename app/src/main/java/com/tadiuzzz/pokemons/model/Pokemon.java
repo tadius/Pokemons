@@ -1,11 +1,18 @@
 package com.tadiuzzz.pokemons.model;
 
+import android.support.annotation.NonNull;
+
 public class Pokemon {
 
-    private int number;
+    //    private int number;
     private String name;
-    private String url;
+    private int id;
+    //    private String url;
     private PokemonCharacteristics pokemonCharacteristics;
+
+    public int getId() {
+        return pokemonCharacteristics.getId();
+    }
 
     public String getName() {
         return name;
@@ -15,22 +22,25 @@ public class Pokemon {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
-    }
+//    public String getUrl() {
+//        return url;
+//    }
+//
+//    public void setUrl(String url) {
+//        this.url = url;
+//    }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public int getNumber() {
-        String[] urlParts = url.split("/");
-        return Integer.parseInt(urlParts[urlParts.length - 1]);
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
+    //    public int getNumber() {
+//        String[] urlParts = url.split("/");
+//        return Integer.parseInt(urlParts[urlParts.length - 1]);
+//    }
+//    public int getNumber() {
+//        return number;
+//    }
+//
+//    public void setNumber(int number) {
+//        this.number = number;
+//    }
 
     public PokemonCharacteristics getPokemonCharacteristics() {
         return pokemonCharacteristics;
@@ -39,4 +49,5 @@ public class Pokemon {
     public void setPokemonCharacteristics(PokemonCharacteristics pokemonCharacteristics) {
         this.pokemonCharacteristics = pokemonCharacteristics;
     }
+
 }

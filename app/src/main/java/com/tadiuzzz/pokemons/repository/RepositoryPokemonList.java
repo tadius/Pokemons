@@ -32,7 +32,7 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
 
     @Override
     public void getData(int offset, IOnDataGotListener listener) {
-        Log.d(PokemonApplication.TAG, "getData");
+//        Log.d(PokemonApplication.TAG, "getData");
         this.offset = offset;
         this.onDataGotListener = listener;
         retrofit = new Retrofit.Builder()
@@ -43,17 +43,34 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
         loadPokemonListFromNetwork();
     }
 
+    @Override
+    public void getData(String name, IOnDataGotListener listener) {
+//        Log.d(PokemonApplication.TAG, "getData");
+        this.onDataGotListener = listener;
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://pokeapi.co/api/v2/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+//        loadOnePokemonFromNetwork(pokemonNumber);
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName(name);
+
+        loadPokemonCharacteristicsFromNetwork(pokemon);
+    }
+
     private void loadPokemonListFromNetwork() {
-        Log.d(PokemonApplication.TAG, "loadPokemonListFromNetwork");
+//        Log.d(PokemonApplication.TAG, "loadPokemonListFromNetwork");
         PokeapiService service = retrofit.create(PokeapiService.class);
         Call<PokemonResult> pokemonResultCall = service.getPokemonList(20, offset);
 
-        Log.d(PokemonApplication.TAG, "Calling...");
+//        Log.d(PokemonApplication.TAG, "Calling...");
         pokemonResultCall.enqueue(new Callback<PokemonResult>() {
 
             @Override
             public void onResponse(Call<PokemonResult> call, Response<PokemonResult> response) {
-                Log.d(PokemonApplication.TAG, "onResponse");
+//                Log.d(PokemonApplication.TAG, "onResponse");
                 if (response.isSuccessful()) {
 
                     PokemonResult pokemonResult = response.body();
@@ -75,7 +92,7 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
 
             @Override
             public void onFailure(Call<PokemonResult> call, Throwable t) {
-                Log.d(PokemonApplication.TAG, "onFailure");
+//                Log.d(PokemonApplication.TAG, "onFailure");
                 onDataGotListener.onErrorGotCallback(t.getMessage());
                 Log.e(TAG, "onFailure: " + t.getMessage());
             }
@@ -84,13 +101,13 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
 
     private void loadPokemonCharacteristicsFromNetwork(final Pokemon pokemon) {
         PokeapiService service = retrofit.create(PokeapiService.class);
-        Call<PokemonCharacteristics> pokemonAbilitiesResult = service.getAbilitiesList(pokemon.getNumber());
+        Call<PokemonCharacteristics> pokemonAbilitiesResult = service.getAbilitiesList(pokemon.getName());
 
         pokemonAbilitiesResult.enqueue(new Callback<PokemonCharacteristics>() {
 
             @Override
             public void onResponse(Call<PokemonCharacteristics> call, Response<PokemonCharacteristics> response) {
-                Log.d(PokemonApplication.TAG, "onResponse");
+//                Log.d(PokemonApplication.TAG, "onResponse");
                 if (response.isSuccessful()) {
 
                     PokemonCharacteristics pokemonCharacteristics = response.body();
@@ -133,7 +150,7 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
 
             @Override
             public void onFailure(Call<PokemonCharacteristics> call, Throwable t) {
-                Log.d(PokemonApplication.TAG, "onFailure");
+//                Log.d(PokemonApplication.TAG, "onFailure");
                 Log.e(TAG, "onFailure: " + t.getMessage());
             }
         });

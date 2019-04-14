@@ -1,7 +1,6 @@
 package com.tadiuzzz.pokemons.presenter;
 
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 
 import com.tadiuzzz.pokemons.PokemonApplication;
@@ -10,18 +9,21 @@ import com.tadiuzzz.pokemons.repository.IRepositoryPokemonList;
 import com.tadiuzzz.pokemons.repository.RepositoryPokemonList;
 import com.tadiuzzz.pokemons.view.IViewPokemonList;
 
-import java.util.ArrayList;
-
-public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettingUpViewListener, IOnDataGotListener {
+public class PresenterPokemonAbout implements IPresenterPokemonList, IOnEndSettingUpViewListener, IOnDataGotListener {
 
     private IViewPokemonList view;
     private IRepositoryPokemonList repository;
     private boolean isLoading = false;
-    private int offset;
+    private String pokemonName;
 
-    public PresenterPokemonList(){
+    public PresenterPokemonAbout(){
 //        Log.d(PokemonApplication.TAG, "PresenterPokemonList");
-        offset = 0;
+        repository = new RepositoryPokemonList();
+    }
+
+    public PresenterPokemonAbout(String pokemonName){
+//        Log.d(PokemonApplication.TAG, "PresenterPokemonList");
+        this.pokemonName = pokemonName;
         repository = new RepositoryPokemonList();
     }
 
@@ -29,13 +31,14 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
 //        Log.d(PokemonApplication.TAG, "loadData");
         isLoading = true;
         view.setRefreshing(isLoading);
-        repository.getData(offset, this);
+        repository.getData(pokemonName, this);
     }
 
     @Override
     public void viewIsReady(IViewPokemonList view) {
 //        Log.d(PokemonApplication.TAG, "viewIsReady");
         this.view = view;
+
         loadData();
     }
 
@@ -47,18 +50,6 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
     @Override
     public void onScrolled(GridLayoutManager layoutManager) {
 //        Log.d(PokemonApplication.TAG, "onScrolled");
-        int visibleItemCount = layoutManager.getChildCount();
-        int totalItemCount = layoutManager.getItemCount();
-        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-
-        if (!isLoading) {
-            if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                    && firstVisibleItemPosition >= 0
-                    && totalItemCount >= offset ) {
-                offset+=20;
-                loadData();
-            }
-        }
     }
 
     @Override
