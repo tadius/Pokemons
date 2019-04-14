@@ -3,11 +3,15 @@ package com.tadiuzzz.pokemons.repository;
 import android.util.Log;
 
 import com.tadiuzzz.pokemons.PokemonApplication;
+import com.tadiuzzz.pokemons.model.Abilities;
+import com.tadiuzzz.pokemons.model.Forms;
 import com.tadiuzzz.pokemons.model.Pokemon;
+import com.tadiuzzz.pokemons.model.PokemonCharacteristics;
 import com.tadiuzzz.pokemons.model.PokemonResult;
+import com.tadiuzzz.pokemons.model.Sprites;
+import com.tadiuzzz.pokemons.model.Stats;
 import com.tadiuzzz.pokemons.network.PokeapiService;
 import com.tadiuzzz.pokemons.presenter.IOnDataGotListener;
-import com.tadiuzzz.pokemons.presenter.IPresenterPokemonList;
 
 import java.util.ArrayList;
 
@@ -36,11 +40,11 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        loadDataFromNetwork();
+        loadPokemonListFromNetwork();
     }
 
-    private void loadDataFromNetwork() {
-        Log.d(PokemonApplication.TAG, "loadDataFromNetwork");
+    private void loadPokemonListFromNetwork() {
+        Log.d(PokemonApplication.TAG, "loadPokemonListFromNetwork");
         PokeapiService service = retrofit.create(PokeapiService.class);
         Call<PokemonResult> pokemonResultCall = service.getPokemonList(20, offset);
 
@@ -55,9 +59,13 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
                     PokemonResult pokemonResult = response.body();
                     ArrayList<Pokemon> pokemons = pokemonResult.getResults();
 
-                    onDataGotListener.onDataGotCallback(pokemons);
+                    for (Pokemon pokemon : pokemons) {
+                        loadPokemonCharacteristicsFromNetwork(pokemon);
+                    }
 
-//                    pokemonListAdapter.addListOfPokemons(pokemons);
+//                    onDataGotListener.onDataGotCallback(pokemons);
+
+//                    pokemonListAdapter.addPokemonToList(pokemons);
 
                 } else {
                     onDataGotListener.onErrorGotCallback(response.errorBody().toString());
@@ -72,5 +80,63 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
                 Log.e(TAG, "onFailure: " + t.getMessage());
             }
         });
+    }
+
+    private void loadPokemonCharacteristicsFromNetwork(final Pokemon pokemon) {
+        PokeapiService service = retrofit.create(PokeapiService.class);
+        Call<PokemonCharacteristics> pokemonAbilitiesResult = service.getAbilitiesList(pokemon.getNumber());
+
+        pokemonAbilitiesResult.enqueue(new Callback<PokemonCharacteristics>() {
+
+            @Override
+            public void onResponse(Call<PokemonCharacteristics> call, Response<PokemonCharacteristics> response) {
+                Log.d(PokemonApplication.TAG, "onResponse");
+                if (response.isSuccessful()) {
+
+                    PokemonCharacteristics pokemonCharacteristics = response.body();
+                    pokemon.setPokemonCharacteristics(pokemonCharacteristics);
+                    onDataGotListener.onDataGotCallback(pokemon);
+
+//                    ArrayList<Abilities> abilities = pokemonCharacteristics.getAbilities();
+//                    ArrayList<Forms> forms = pokemonCharacteristics.getForms();
+//                    ArrayList<Stats> stats = pokemonCharacteristics.getStats();
+//                    Sprites sprites = pokemonCharacteristics.getSprites();
+//
+//
+//                    for (Abilities ability : abilities) {
+//                        Log.d(TAG, "ability.getName(): " + ability.getAbility().getName());
+//                        Log.d(TAG, "ability.getUrl(): " + ability.getAbility().getUrl());
+//                    }
+//
+//                    for (Forms form : forms) {
+//                        Log.d(TAG, "form.getName(): " + form.getName());
+//                        Log.d(TAG, "form.getUrl(): " + form.getUrl());
+//
+//                    }
+//
+//                    Log.d(TAG, "sprite.getFront_default(): " + sprites.getFront_default());
+//                    Log.d(TAG, "sprite.getBack_default(): " + sprites.getBack_default());
+//
+//
+//                    for (Stats stat : stats) {
+//                        Log.d(TAG, "stat.getBaseStat(): " + stat.getBase_stat());
+//                        Log.d(TAG, "stat.getName(): " + stat.getStat().getName());
+//                        Log.d(TAG, "stat.getUrl(): " + stat.getStat().getUrl());
+//                    }
+
+//                    pokemonListAdapter.addPokemonToList(pokemons);
+
+                } else {
+                    Log.e(TAG, "onResponse: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PokemonCharacteristics> call, Throwable t) {
+                Log.d(PokemonApplication.TAG, "onFailure");
+                Log.e(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+
     }
 }

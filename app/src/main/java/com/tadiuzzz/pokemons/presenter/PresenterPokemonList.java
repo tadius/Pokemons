@@ -62,9 +62,9 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
     }
 
     @Override
-    public void onDataGotCallback(ArrayList<Pokemon> pokemons) {
+    public void onDataGotCallback(Pokemon pokemon) {
         Log.d(PokemonApplication.TAG, "onDataGotCallback");
-        view.setViewData(pokemons, this);
+        view.setViewData(pokemon, this);
     }
 
     @Override

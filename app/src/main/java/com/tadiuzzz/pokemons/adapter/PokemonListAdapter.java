@@ -55,11 +55,15 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
             Pokemon pokemon = pokemons.get(position);
             tvPokemonName.setText(pokemon.getName());
 
-            Glide.with(context)
-                    .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getNumber() + ".png")
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(ivPokemonPicture);
+            if (pokemon.getPokemonCharacteristics() != null) {
+                Glide.with(context)
+                        .load(pokemon.getPokemonCharacteristics().getSprites().getFront_default())
+//                    .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getNumber() + ".png")
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(ivPokemonPicture);
+            }
+
             Log.d(PokemonApplication.TAG, "bind PokemonsViewHolder");
         }
     }
@@ -134,10 +138,10 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
         }
     }
 
-    public void addListOfPokemons(ArrayList<Pokemon> pokemons) {
-        this.pokemons.addAll(pokemons);
+    public void addPokemonToList(Pokemon pokemon) {
+        this.pokemons.add(pokemon);
         notifyDataSetChanged();
-        Log.d(PokemonApplication.TAG, "addListOfPokemons");
+        Log.d(PokemonApplication.TAG, "addPokemonToList");
 
     }
 

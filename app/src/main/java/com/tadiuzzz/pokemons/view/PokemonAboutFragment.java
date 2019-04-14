@@ -20,7 +20,7 @@ import com.tadiuzzz.pokemons.presenter.IOnEndSettingUpViewListener;
 import com.tadiuzzz.pokemons.presenter.IPresenterPokemonList;
 import com.tadiuzzz.pokemons.presenter.PresenterPokemonList;
 
-public class PokemonListFragment extends Fragment implements IViewPokemonList {
+public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
 
     private IPresenterPokemonList presenterPokemonList;
     private RecyclerView rvPokemonList;

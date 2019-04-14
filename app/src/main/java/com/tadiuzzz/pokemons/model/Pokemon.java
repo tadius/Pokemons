@@ -5,6 +5,7 @@ public class Pokemon {
     private int number;
     private String name;
     private String url;
+    private PokemonCharacteristics pokemonCharacteristics;
 
     public String getName() {
         return name;
@@ -29,5 +30,13 @@ public class Pokemon {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public PokemonCharacteristics getPokemonCharacteristics() {
+        return pokemonCharacteristics;
+    }
+
+    public void setPokemonCharacteristics(PokemonCharacteristics pokemonCharacteristics) {
+        this.pokemonCharacteristics = pokemonCharacteristics;
     }
 }
