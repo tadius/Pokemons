@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.tadiuzzz.pokemons.db.PokemonsDBManager;
 import com.tadiuzzz.pokemons.model.Abilities;
 import com.tadiuzzz.pokemons.model.Forms;
 import com.tadiuzzz.pokemons.model.PokemonCharacteristics;

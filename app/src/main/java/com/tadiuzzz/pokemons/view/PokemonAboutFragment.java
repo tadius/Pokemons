@@ -20,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.tadiuzzz.pokemons.PokemonApplication;
 import com.tadiuzzz.pokemons.R;
 import com.tadiuzzz.pokemons.adapter.PokemonListAdapter;
+import com.tadiuzzz.pokemons.db.PokemonsDBManager;
 import com.tadiuzzz.pokemons.model.Abilities;
 import com.tadiuzzz.pokemons.model.Pokemon;
 import com.tadiuzzz.pokemons.model.Stats;
@@ -77,8 +78,18 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
     }
 
     @Override
-    public void setViewData(Pokemon pokemon, IOnEndSettingUpViewListener listener) {
+    public void setViewData(final Pokemon pokemon, IOnEndSettingUpViewListener listener) {
 //        Log.d(PokemonApplication.TAG, "setViewData");
+
+        ibSaveToDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PokemonsDBManager dbManager = new PokemonsDBManager(context);
+                dbManager.addPokemon(pokemon);
+                dbManager.addAbilities(pokemon);
+                dbManager.addStats(pokemon);
+            }
+        });
 
         tvPokemonNameAbout.setText(pokemon.getName());
         String allStats = "";
