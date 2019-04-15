@@ -71,6 +71,17 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
 //        }
     }
 
+    @Override
+    public void getDataFromDatabase(int dbId, Context context, IOnDataGotListener listener) {
+        this.onDataGotListener = listener;
+        PokemonsDBManager dbManager = new PokemonsDBManager(context);
+        Pokemon pokemon = dbManager.getPokemonById(dbId);
+        onDataGotListener.onDataGotCallback(pokemon);
+//        for (Pokemon pokemon : pokemons) {
+//            onDataGotListener.onDataGotCallback(pokemon);
+//        }
+    }
+
     private void loadPokemonListFromNetwork() {
 //        Log.d(PokemonApplication.TAG, "loadPokemonListFromNetwork");
         PokeapiService service = retrofit.create(PokeapiService.class);

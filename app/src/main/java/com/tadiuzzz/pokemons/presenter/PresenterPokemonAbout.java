@@ -17,6 +17,7 @@ public class PresenterPokemonAbout implements IPresenterPokemonList, IOnEndSetti
     private IRepositoryPokemonList repository;
     private boolean isLoading = false;
     private String pokemonName;
+    private int dbId;
 
     public PresenterPokemonAbout(){
 //        Log.d(PokemonApplication.TAG, "PresenterPokemonList");
@@ -29,11 +30,23 @@ public class PresenterPokemonAbout implements IPresenterPokemonList, IOnEndSetti
         repository = new RepositoryPokemonList();
     }
 
+    public PresenterPokemonAbout(String pokemonName, int dbId){
+//        Log.d(PokemonApplication.TAG, "PresenterPokemonList");
+        this.pokemonName = pokemonName;
+        this.dbId = dbId;
+        repository = new RepositoryPokemonList();
+    }
+
     private void loadData() {
 //        Log.d(PokemonApplication.TAG, "loadData");
         isLoading = true;
         view.setRefreshing(isLoading);
-        repository.getData(pokemonName, this);
+
+        if(dbId != 0){
+            repository.getDataFromDatabase(dbId, view.getContext(), this);
+        } else {
+            repository.getData(pokemonName, this);
+        }
     }
 
     @Override

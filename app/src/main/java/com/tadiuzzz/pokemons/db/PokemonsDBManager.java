@@ -64,6 +64,60 @@ public class PokemonsDBManager {
     }
 
 //    **************************
+//    **** Получить покемона по ID
+//    **************************
+
+    public Pokemon getPokemonByPokemonId(int pokemonId){
+        PokemonCursorWrapper cursor = queryPokemons(PokemonsDbSchema.PokemonsTable.Cols.ID+ " = ?", new String[]{String.valueOf(pokemonId)}, null);
+        Pokemon pokemon = null;
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                pokemon = cursor.getPokemon();
+
+                ArrayList<Abilities> abilities = new ArrayList<Abilities>();
+                abilities.addAll(getAbilitieByPokemonId(pokemon.getPokemonCharacteristics().getId()));
+                pokemon.getPokemonCharacteristics().setAbilities(abilities);
+
+                ArrayList<Stats> stats = new ArrayList<Stats>();
+                stats.addAll(getStatsByPokemonId(pokemon.getPokemonCharacteristics().getId()));
+                pokemon.getPokemonCharacteristics().setStats(stats);
+
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return pokemon;
+    }
+
+    public Pokemon getPokemonById(int pokemonId) {
+        PokemonCursorWrapper cursor = queryPokemons("_id = ?", new String[]{String.valueOf(pokemonId)}, null);
+        Pokemon pokemon = null;
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                pokemon = cursor.getPokemon();
+
+                ArrayList<Abilities> abilities = new ArrayList<Abilities>();
+                abilities.addAll(getAbilitieByPokemonId(pokemon.getPokemonCharacteristics().getId()));
+                pokemon.getPokemonCharacteristics().setAbilities(abilities);
+
+                ArrayList<Stats> stats = new ArrayList<Stats>();
+                stats.addAll(getStatsByPokemonId(pokemon.getPokemonCharacteristics().getId()));
+                pokemon.getPokemonCharacteristics().setStats(stats);
+
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return pokemon;
+    }
+
+//    **************************
 //    **** Получить список всех покемонов
 //    **************************
 

@@ -130,6 +130,10 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
         Log.d(PokemonApplication.TAG, "=================CLICK=================");
         Bundle bundle = new Bundle();
         bundle.putString("pokemonName", pokemon.getName());
+        if(pokemon.getId() != 0) {
+            bundle.putInt("dbId", pokemon.getId());
+        }
+
         navigator.navigateTo(MainActivity.POKEMON_ABOUT_FRAGMENT, bundle);
     }
 }

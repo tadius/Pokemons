@@ -42,6 +42,7 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
     private TextView tvAbilities;
 
     private String pokemonName;
+    private int dbId;
 
     private Context context;
 
@@ -55,6 +56,7 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
         Bundle bundle = getArguments();
         if(bundle != null) {
             pokemonName = bundle.getString("pokemonName");
+            dbId = bundle.getInt("dbId");
         } else {
             pokemonName = "";
         }
@@ -65,7 +67,12 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
 
     public void initView(View view) {
 //        Log.d(PokemonApplication.TAG, "initView");
-        presenterPokemonAbout = new PresenterPokemonAbout(pokemonName);
+        if (dbId != 0) {
+            presenterPokemonAbout = new PresenterPokemonAbout(pokemonName, dbId);
+        } else {
+            presenterPokemonAbout = new PresenterPokemonAbout(pokemonName);
+        }
+
 
         ivPokemonPictureAbout = (ImageView) view.findViewById(R.id.ivPokemonPictureAbout);
         ivPokemonPictureBackAbout = (ImageView) view.findViewById(R.id.ivPokemonPictureBackAbout);
@@ -84,10 +91,21 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
         ibSaveToDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                ***********************************
+//                ***********************************
+//                  УБРАТЬ В РЕПОЗИТОРИЙ
+//                ***********************************
+//                ***********************************
+//                ***********************************
+
                 PokemonsDBManager dbManager = new PokemonsDBManager(context);
-                dbManager.addPokemon(pokemon);
-                dbManager.addAbilities(pokemon);
-                dbManager.addStats(pokemon);
+                if(dbManager.getPokemonByPokemonId(pokemon.getPokemonCharacteristics().getId()) == null) { //проверка, есть ли уже в базе
+                    dbManager.addPokemon(pokemon);
+                    dbManager.addAbilities(pokemon);
+                    dbManager.addStats(pokemon);
+                } else {
+//                    TODO delete from database
+                }
             }
         });
 
