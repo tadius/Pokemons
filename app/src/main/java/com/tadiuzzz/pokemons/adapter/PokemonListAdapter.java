@@ -83,7 +83,6 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
             }
 
 
-
 //            Log.d(PokemonApplication.TAG, "bind PokemonsViewHolder");
         }
     }
@@ -176,6 +175,19 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
         notifyDataSetChanged();
 //        Log.d(PokemonApplication.TAG, "addPokemonToList");
 
+    }
+
+    public void addPokemons(ArrayList<Pokemon> pokemons) {
+        clearPokemonsList();
+        this.pokemons.addAll(pokemons);
+
+        notifyDataSetChanged();
+//        Log.d(PokemonApplication.TAG, "addPokemonToList");
+
+    }
+
+    public void clearPokemonsList() {
+        this.pokemons.clear();
     }
 
 }

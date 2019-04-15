@@ -1,10 +1,7 @@
 package com.tadiuzzz.pokemons.presenter;
 
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 
-import com.tadiuzzz.pokemons.PokemonApplication;
 import com.tadiuzzz.pokemons.model.Pokemon;
 import com.tadiuzzz.pokemons.repository.IRepositoryPokemonList;
 import com.tadiuzzz.pokemons.repository.RepositoryPokemonList;
@@ -19,7 +16,7 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
     private boolean isLoading = false;
     private int offset;
 
-    public PresenterPokemonList(){
+    public PresenterPokemonList() {
 //        Log.d(PokemonApplication.TAG, "PresenterPokemonList");
         offset = 0;
         repository = new RepositoryPokemonList();
@@ -29,7 +26,8 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
 //        Log.d(PokemonApplication.TAG, "loadData");
         isLoading = true;
         view.setRefreshing(isLoading);
-        repository.getData(offset, this);
+//        repository.getData(offset, this);
+        repository.getDataFromDatabase(view.getContext(), this);
     }
 
     @Override
@@ -54,11 +52,45 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
         if (!isLoading) {
             if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                     && firstVisibleItemPosition >= 0
-                    && totalItemCount >= offset ) {
-                offset+=20;
+                    && totalItemCount >= offset) {
+                offset += 20;
                 loadData();
             }
         }
+    }
+
+    //    private Pok convertPokemonToPok(Pokemon pokemon) {
+//        String name = pokemon.getPokemonCharacteristics().getName();
+//        int pokemonId = pokemon.getPokemonCharacteristics().getPokemonId();
+//        ArrayList<Ability> allAbilities = new ArrayList<Ability>();
+//
+//        ArrayList<Abilities> abilities = pokemon.getPokemonCharacteristics().getAbilities();
+//        for (Abilities ability : abilities) {
+//            allAbilities.add(ability.getAbility());
+//        }
+//
+//        ArrayList<Stat> allStats = new ArrayList<Stat>();
+//        ArrayList<Stats> stats = pokemon.getPokemonCharacteristics().getStats();
+//        for (Stats stat : stats) {
+//            allStats.add(stat.getStat());
+//            allStats += stat.getBase_stat() + "\n";
+//        }
+//
+//        ArrayList<Forms> forms;
+//        Sprites sprites;
+//
+//        Pok pok = new Pok(pokemon.getPokemonCharacteristics().getPokemonId(),
+//
+//
+//        );
+//
+//
+//        return pok;
+//    }
+    @Override
+    public void onDataGotCallback(ArrayList<Pokemon> pokemons) {
+//        Log.d(PokemonApplication.TAG, "onDataGotCallback");
+        view.setViewData(pokemons, this);
     }
 
     @Override

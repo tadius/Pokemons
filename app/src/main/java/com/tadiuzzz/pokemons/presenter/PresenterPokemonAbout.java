@@ -9,6 +9,8 @@ import com.tadiuzzz.pokemons.repository.IRepositoryPokemonList;
 import com.tadiuzzz.pokemons.repository.RepositoryPokemonList;
 import com.tadiuzzz.pokemons.view.IViewPokemonList;
 
+import java.util.ArrayList;
+
 public class PresenterPokemonAbout implements IPresenterPokemonList, IOnEndSettingUpViewListener, IOnDataGotListener {
 
     private IViewPokemonList view;
@@ -56,6 +58,11 @@ public class PresenterPokemonAbout implements IPresenterPokemonList, IOnEndSetti
     public void onDataGotCallback(Pokemon pokemon) {
 //        Log.d(PokemonApplication.TAG, "onDataGotCallback");
         view.setViewData(pokemon, this);
+    }
+
+    @Override
+    public void onDataGotCallback(ArrayList<Pokemon> pokemons) {
+
     }
 
     @Override

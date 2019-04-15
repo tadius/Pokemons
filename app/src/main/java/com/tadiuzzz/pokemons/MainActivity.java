@@ -6,24 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.tadiuzzz.pokemons.db.PokemonsDBManager;
-import com.tadiuzzz.pokemons.model.Abilities;
-import com.tadiuzzz.pokemons.model.Forms;
-import com.tadiuzzz.pokemons.model.PokemonCharacteristics;
-import com.tadiuzzz.pokemons.model.Sprites;
-import com.tadiuzzz.pokemons.model.Stats;
-import com.tadiuzzz.pokemons.network.PokeapiService;
 import com.tadiuzzz.pokemons.view.INavigator;
 import com.tadiuzzz.pokemons.view.PokemonAboutFragment;
 import com.tadiuzzz.pokemons.view.PokemonListFragment;
-
-import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.tadiuzzz.pokemons.PokemonApplication.TAG;
 

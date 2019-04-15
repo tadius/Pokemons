@@ -127,6 +127,11 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
     }
 
     @Override
+    public void setViewData(ArrayList<Pokemon> pokemons, IOnEndSettingUpViewListener listener) {
+
+    }
+
+    @Override
     public void setRefreshing(boolean isRefreshing) {
 //        Log.d(PokemonApplication.TAG, "setRefreshing");
     }

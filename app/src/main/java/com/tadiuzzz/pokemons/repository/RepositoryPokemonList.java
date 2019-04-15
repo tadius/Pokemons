@@ -1,17 +1,16 @@
 package com.tadiuzzz.pokemons.repository;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.tadiuzzz.pokemons.PokemonApplication;
-import com.tadiuzzz.pokemons.model.Abilities;
-import com.tadiuzzz.pokemons.model.Forms;
+import com.tadiuzzz.pokemons.db.PokemonsDBManager;
 import com.tadiuzzz.pokemons.model.Pokemon;
 import com.tadiuzzz.pokemons.model.PokemonCharacteristics;
 import com.tadiuzzz.pokemons.model.PokemonResult;
-import com.tadiuzzz.pokemons.model.Sprites;
-import com.tadiuzzz.pokemons.model.Stats;
 import com.tadiuzzz.pokemons.network.PokeapiService;
 import com.tadiuzzz.pokemons.presenter.IOnDataGotListener;
+import com.tadiuzzz.pokemons.presenter.PresenterPokemonList;
 
 import java.util.ArrayList;
 
@@ -58,6 +57,18 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
         pokemon.setName(name);
 
         loadPokemonCharacteristicsFromNetwork(pokemon);
+    }
+
+    @Override
+    public void getDataFromDatabase(Context context, IOnDataGotListener listener) {
+        this.onDataGotListener = listener;
+        PokemonsDBManager dbManager = new PokemonsDBManager(context);
+        ArrayList<Pokemon> pokemons = dbManager.getAllPokemons();
+        Log.d(PokemonApplication.TAG,"pokemons size - " + pokemons.size());
+        onDataGotListener.onDataGotCallback(pokemons);
+//        for (Pokemon pokemon : pokemons) {
+//            onDataGotListener.onDataGotCallback(pokemon);
+//        }
     }
 
     private void loadPokemonListFromNetwork() {

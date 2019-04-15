@@ -10,9 +10,33 @@ public class Pokemon {
     //    private String url;
     private PokemonCharacteristics pokemonCharacteristics;
 
-    public int getId() {
-        return pokemonCharacteristics.getId();
+    public Pokemon(){
+
     }
+
+//    public Pokemon(int id, String nameOfPokemon, int pokemonId, String spriteFront, String spriteBack) {
+//        this.id = id;
+//        this.name = nameOfPokemon;
+//        this.pokemonCharacteristics.setName(nameOfPokemon);
+//        this.pokemonCharacteristics.setId(pokemonId);
+//
+//        Sprites sprites = new Sprites();
+//        sprites.setFront_default(spriteFront);
+//        sprites.setBack_default(spriteBack);
+//        this.pokemonCharacteristics.setSprites(sprites);
+//    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    //    public int getPokemonId() {
+//        return pokemonCharacteristics.getPokemonId();
+//    }
 
     public String getName() {
         return name;

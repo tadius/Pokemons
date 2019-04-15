@@ -21,6 +21,8 @@ import com.tadiuzzz.pokemons.presenter.IOnEndSettingUpViewListener;
 import com.tadiuzzz.pokemons.presenter.IPresenterPokemonList;
 import com.tadiuzzz.pokemons.presenter.PresenterPokemonList;
 
+import java.util.ArrayList;
+
 public class PokemonListFragment extends Fragment implements IViewPokemonList, IOnPokemonClickListener {
 
     private INavigator navigator;
@@ -28,7 +30,16 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
     private RecyclerView rvPokemonList;
     private PokemonListAdapter pokemonListAdapter;
     private GridLayoutManager layoutManager;
+
     private Context context;
+
+    @Nullable
+    @Override
+    public Context getContext() {
+        return context;
+    }
+
+
 
     @Nullable
     @Override
@@ -90,6 +101,14 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
         pokemonListAdapter.removeLoading();
 //        Log.d(PokemonApplication.TAG, "setViewData");
         pokemonListAdapter.addPokemonToList(pokemon);
+        listener.OnEndSettingUpViewCallback();
+    }
+
+    @Override
+    public void setViewData(ArrayList<Pokemon> pokemons, IOnEndSettingUpViewListener listener) {
+        pokemonListAdapter.removeLoading();
+//        Log.d(PokemonApplication.TAG, "setViewData");
+        pokemonListAdapter.addPokemons(pokemons);
         listener.OnEndSettingUpViewCallback();
     }
 
