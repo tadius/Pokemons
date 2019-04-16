@@ -117,6 +117,13 @@ public class PokemonsDBManager {
         return pokemon;
     }
 
+    public void deletePokemonById(int pokemonId) {
+        db.delete(PokemonsDbSchema.PokemonsTable.NAME, PokemonsDbSchema.PokemonsTable.Cols.ID + " = " + pokemonId, null);
+        db.delete(PokemonsDbSchema.AbilitiesTable.NAME, PokemonsDbSchema.AbilitiesTable.Cols.ID + " = " + pokemonId, null);
+        db.delete(PokemonsDbSchema.StatsTable.NAME, PokemonsDbSchema.StatsTable.Cols.ID + " = " + pokemonId, null);
+    }
+
+
 //    **************************
 //    **** Получить список всех покемонов
 //    **************************

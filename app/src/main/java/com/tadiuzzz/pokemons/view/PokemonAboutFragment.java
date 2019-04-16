@@ -25,6 +25,7 @@ import com.tadiuzzz.pokemons.model.Abilities;
 import com.tadiuzzz.pokemons.model.Pokemon;
 import com.tadiuzzz.pokemons.model.Stats;
 import com.tadiuzzz.pokemons.presenter.IOnEndSettingUpViewListener;
+import com.tadiuzzz.pokemons.presenter.IPresenterPokemonAbout;
 import com.tadiuzzz.pokemons.presenter.IPresenterPokemonList;
 import com.tadiuzzz.pokemons.presenter.PresenterPokemonAbout;
 import com.tadiuzzz.pokemons.presenter.PresenterPokemonList;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 
 public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
 
-    private IPresenterPokemonList presenterPokemonAbout;
+    private IPresenterPokemonAbout presenterPokemonAbout;
     private ImageView ivPokemonPictureAbout;
     private ImageView ivPokemonPictureBackAbout;
     private TextView tvPokemonNameAbout;
@@ -97,15 +98,9 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
 //                ***********************************
 //                ***********************************
 //                ***********************************
+                presenterPokemonAbout.onSaveButtonClick(pokemon);
 
-                PokemonsDBManager dbManager = new PokemonsDBManager(context);
-                if(dbManager.getPokemonByPokemonId(pokemon.getPokemonCharacteristics().getId()) == null) { //проверка, есть ли уже в базе
-                    dbManager.addPokemon(pokemon);
-                    dbManager.addAbilities(pokemon);
-                    dbManager.addStats(pokemon);
-                } else {
-//                    TODO delete from database
-                }
+
             }
         });
 

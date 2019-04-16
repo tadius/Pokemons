@@ -14,8 +14,15 @@ import com.tadiuzzz.pokemons.presenter.IOnDataGotListener;
 import com.tadiuzzz.pokemons.presenter.PresenterPokemonList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Observable;
 
+import io.reactivex.Observer;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
@@ -34,14 +41,24 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
     private int offset;
 
     @Override
+    public void addDataToDb(Context context, Pokemon pokemon){
+        PokemonsDBManager dbManager = new PokemonsDBManager(context);
+//        TODO сделать запрос асинхронным (AsyncTask, new Thread или RxJava?)
+        if(dbManager.getPokemonByPokemonId(pokemon.getPokemonCharacteristics().getId()) == null) { //проверка, есть ли уже в базе
+            dbManager.addPokemon(pokemon);
+            dbManager.addAbilities(pokemon);
+            dbManager.addStats(pokemon);
+        } else {
+            dbManager.deletePokemonById(pokemon.getPokemonCharacteristics().getId());
+            Log.d(TAG, "DELETED: ");
+        }
+    }
+
+    @Override
     public void getData(int offset, IOnDataGotListener listener) {
 //        Log.d(PokemonApplication.TAG, "getData");
         this.offset = offset;
         this.onDataGotListener = listener;
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://pokeapi.co/api/v2/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
 //        loadPokemonListFromNetwork();
         loadRXPokemonListFromNetwork();
@@ -51,10 +68,6 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
     public void getData(String name, IOnDataGotListener listener) {
 //        Log.d(PokemonApplication.TAG, "getData");
         this.onDataGotListener = listener;
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://pokeapi.co/api/v2/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
         Pokemon pokemon = new Pokemon();
         pokemon.setName(name);
@@ -66,18 +79,70 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
     public void getDataFromDatabase(Context context, IOnDataGotListener listener) {
         this.onDataGotListener = listener;
         PokemonsDBManager dbManager = new PokemonsDBManager(context);
-        ArrayList<Pokemon> pokemons = dbManager.getAllPokemons();
-        Log.d(PokemonApplication.TAG,"pokemons size - " + pokemons.size());
-        onDataGotListener.onDataGotCallback(pokemons);
 
+        io.reactivex.Observable.just(dbManager.getAllPokemons())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Pokemon>>() {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Pokemon> pokemons) {
+                        onDataGotListener.onDataGotCallback(pokemons);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // Network error
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+//        ArrayList<Pokemon> pokemons = dbManager.getAllPokemons();
+//        Log.d(PokemonApplication.TAG,"pokemons size - " + pokemons.size());
+//        onDataGotListener.onDataGotCallback(pokemons);
     }
 
     @Override
     public void getDataFromDatabase(int dbId, Context context, IOnDataGotListener listener) {
         this.onDataGotListener = listener;
         PokemonsDBManager dbManager = new PokemonsDBManager(context);
-        Pokemon pokemon = dbManager.getPokemonById(dbId);
-        onDataGotListener.onDataGotCallback(pokemon);
+
+        io.reactivex.Observable.just(dbManager.getPokemonById(dbId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Pokemon>() {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Pokemon pokemon) {
+                        Log.d(PokemonApplication.TAG, "Pokemon is already in DataBase");
+                        onDataGotListener.onDataGotCallback(pokemon);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // Network error
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
 
     private void loadRXPokemonListFromNetwork(){

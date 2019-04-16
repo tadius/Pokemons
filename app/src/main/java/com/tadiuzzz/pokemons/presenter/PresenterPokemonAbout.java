@@ -1,5 +1,6 @@
 package com.tadiuzzz.pokemons.presenter;
 
+import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 
@@ -11,7 +12,7 @@ import com.tadiuzzz.pokemons.view.IViewPokemonList;
 
 import java.util.ArrayList;
 
-public class PresenterPokemonAbout implements IPresenterPokemonList, IOnEndSettingUpViewListener, IOnDataGotListener {
+public class PresenterPokemonAbout implements IPresenterPokemonAbout, IOnEndSettingUpViewListener, IOnDataGotListener {
 
     private IViewPokemonList view;
     private IRepositoryPokemonList repository;
@@ -58,16 +59,6 @@ public class PresenterPokemonAbout implements IPresenterPokemonList, IOnEndSetti
     }
 
     @Override
-    public void onSwipeRefresh() {
-//        Log.d(PokemonApplication.TAG, "onSwipeRefresh");
-    }
-
-    @Override
-    public void onScrolled(GridLayoutManager layoutManager) {
-//        Log.d(PokemonApplication.TAG, "onScrolled");
-    }
-
-    @Override
     public void onDataGotCallback(Pokemon pokemon) {
 //        Log.d(PokemonApplication.TAG, "onDataGotCallback");
         view.setViewData(pokemon, this);
@@ -88,5 +79,11 @@ public class PresenterPokemonAbout implements IPresenterPokemonList, IOnEndSetti
     public void OnEndSettingUpViewCallback() {
 //        Log.d(PokemonApplication.TAG, "OnEndSettingUpViewCallback");
         isLoading = false;
+    }
+
+    @Override
+    public void onSaveButtonClick(Pokemon pokemon) {
+        repository.addDataToDb(view.getContext(), pokemon);
+//        TODO view.swapicon
     }
 }
