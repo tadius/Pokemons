@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public interface IViewPokemonList {
 
-//    void setViewData(ArrayList<Pokemon> pokemons, IOnEndSettingUpViewListener listener);
     Context getContext();
 
     void setViewData(Pokemon pokemon, IOnEndSettingUpViewListener listener);

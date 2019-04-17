@@ -27,8 +27,6 @@ import java.util.Collections;
 public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.MyViewHolder> {
 
     private ArrayList<Pokemon> pokemons;
-    private ArrayList<Pokemon> pokemonsBuffer;
-    private int counter;
     private boolean isLoadingAdded;
     private Context context;
     private IOnPokemonClickListener onPokemonClickListener;
@@ -37,8 +35,6 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
         this.context = context;
         this.onPokemonClickListener = onPokemonClickListener;
         pokemons = new ArrayList<>();
-        pokemonsBuffer = new ArrayList<Pokemon>();
-//        Log.d(PokemonApplication.TAG, "PokemonListAdapter");
     }
 
     abstract class MyViewHolder extends RecyclerView.ViewHolder {
@@ -76,15 +72,12 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
             if (pokemon.getPokemonCharacteristics() != null) {
                 Glide.with(context)
                         .load(pokemon.getPokemonCharacteristics().getSprites().getFront_default())
-//                    .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokemon.getNumber() + ".png")
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(ivPokemonPicture);
             }
 
-
-//            Log.d(PokemonApplication.TAG, "bind PokemonsViewHolder");
-        }
+            }
     }
 
     public class LoadingViewHolder extends MyViewHolder {
@@ -93,7 +86,6 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
         public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
             pbLoadingPokemons = (ProgressBar) itemView.findViewById(R.id.pbLoadingPokemons);
-
         }
 
         @Override
@@ -125,12 +117,10 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder viewHolder, int position) {
         viewHolder.bind(position);
-//        Log.d(PokemonApplication.TAG, "onBindViewHolder");
     }
 
     @Override
     public int getItemCount() {
-//        Log.d(PokemonApplication.TAG, "getItemCount");
         if (isLoadingAdded)
             return pokemons.size() + 1;
         else return pokemons.size();
@@ -158,23 +148,11 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
     }
 
     public void addPokemonToList(Pokemon pokemon) {
-        //добавление покемонов пачкой по 20 шт
-        /*counter++;
-        this.pokemonsBuffer.add(pokemon);
-        if (counter>=20) {
-            ComparePokemon comparePokemon = new ComparePokemon();
-            this.pokemons.addAll(pokemonsBuffer);
-            Collections.sort(pokemons, comparePokemon);
-            pokemonsBuffer.clear();
-        }*/
-
         this.pokemons.add(pokemon);
         ComparePokemon comparePokemon = new ComparePokemon();
         Collections.sort(pokemons, comparePokemon);
 
         notifyDataSetChanged();
-//        Log.d(PokemonApplication.TAG, "addPokemonToList");
-
     }
 
     public void addPokemons(ArrayList<Pokemon> pokemons) {
@@ -182,8 +160,6 @@ public class PokemonListAdapter extends RecyclerView.Adapter<PokemonListAdapter.
         this.pokemons.addAll(pokemons);
 
         notifyDataSetChanged();
-//        Log.d(PokemonApplication.TAG, "addPokemonToList");
-
     }
 
     public void clearPokemonsList() {

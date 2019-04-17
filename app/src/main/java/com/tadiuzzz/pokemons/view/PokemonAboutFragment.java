@@ -54,7 +54,6 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonAbout 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pokemon_about, container, false);
-//        Log.d(PokemonApplication.TAG, "onCreateView");
         context = this.getActivity();
 
         Bundle bundle = getArguments();
@@ -70,7 +69,6 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonAbout 
     }
 
     public void initView(View view) {
-//        Log.d(PokemonApplication.TAG, "initView");
         if (dbId != 0) {
             presenterPokemonAbout = new PresenterPokemonAbout(pokemonName, dbId);
         } else {
@@ -90,19 +88,12 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonAbout 
 
     @Override
     public void setViewData(final Pokemon pokemon, IOnEndSettingUpViewListener listener) {
-//        Log.d(PokemonApplication.TAG, "setViewData");
 
         ibSaveToDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ***********************************
-//                ***********************************
-//                  УБРАТЬ В РЕПОЗИТОРИЙ
-//                ***********************************
-//                ***********************************
-//                ***********************************
-                presenterPokemonAbout.onSaveButtonClick(pokemon);
 
+                presenterPokemonAbout.onSaveButtonClick(pokemon);
 
             }
         });
@@ -156,7 +147,6 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonAbout 
 
     @Override
     public void showError(String error) {
-//        Log.d(PokemonApplication.TAG, "showError");
     }
 
 

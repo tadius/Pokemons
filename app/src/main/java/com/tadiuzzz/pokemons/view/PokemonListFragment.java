@@ -47,7 +47,6 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pokemon_list, container, false);
-//        Log.d(PokemonApplication.TAG, "onCreateView");
         navigator = (MainActivity)getActivity();
         context = this.getActivity();
 
@@ -58,7 +57,6 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
     }
 
     public void initView(View view) {
-//        Log.d(PokemonApplication.TAG, "initView");
         presenterPokemonList = new PresenterPokemonList();
 
         rvPokemonList = (RecyclerView) view.findViewById(R.id.rvPokemonList);
@@ -104,7 +102,6 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
     @Override
     public void setViewData(Pokemon pokemon, IOnEndSettingUpViewListener listener) {
         pokemonListAdapter.removeLoading();
-//        Log.d(PokemonApplication.TAG, "setViewData");
         pokemonListAdapter.addPokemonToList(pokemon);
         listener.OnEndSettingUpViewCallback();
     }
@@ -112,20 +109,17 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
     @Override
     public void setViewData(ArrayList<Pokemon> pokemons, IOnEndSettingUpViewListener listener) {
         pokemonListAdapter.removeLoading();
-//        Log.d(PokemonApplication.TAG, "setViewData");
         pokemonListAdapter.addPokemons(pokemons);
         listener.OnEndSettingUpViewCallback();
     }
 
     @Override
     public void setRefreshing(boolean isRefreshing) {
-//        Log.d(PokemonApplication.TAG, "setRefreshing");
         pokemonListAdapter.addLoading();
     }
 
     @Override
     public void showError(String error) {
-//        Log.d(PokemonApplication.TAG, "showError");
         pokemonListAdapter.removeLoading();
     }
 

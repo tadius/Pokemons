@@ -56,11 +56,9 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
 
     @Override
     public void getData(int offset, IOnDataGotListener listener) {
-//        Log.d(PokemonApplication.TAG, "getData");
         this.offset = offset;
         this.onDataGotListener = listener;
 
-//        loadPokemonListFromNetwork();
         loadRXPokemonListFromNetwork();
     }
 
@@ -106,9 +104,6 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
                     }
                 });
 
-//        ArrayList<Pokemon> pokemons = dbManager.getAllPokemons();
-//        Log.d(PokemonApplication.TAG,"pokemons size - " + pokemons.size());
-//        onDataGotListener.onDataGotCallback(pokemons);
     }
 
     @Override

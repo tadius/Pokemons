@@ -18,7 +18,6 @@ public class ViewPagerFragment extends Fragment {
 
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
-//    private Toolbar toolbar;
     private TabLayout tabLayout;
 
     @Nullable
@@ -29,9 +28,6 @@ public class ViewPagerFragment extends Fragment {
 
 
         viewPager = view.findViewById(R.id.viewPager);
-
-//        toolbar = view.findViewById(R.id.toolBar);
-//        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
