@@ -12,6 +12,7 @@ public interface IRepositoryPokemonList {
     void getData(String name, IOnDataGotListener listener);
     void getDataFromDatabase(Context context, IOnDataGotListener listener);
     void getDataFromDatabase(int dbId, Context context, IOnDataGotListener listener);
+    void getDataFromDatabase(String name, Context context, IOnDataGotListener listener);
 
 }
 

@@ -31,6 +31,8 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
     private PokemonListAdapter pokemonListAdapter;
     private GridLayoutManager layoutManager;
 
+    private int position; // переменная для хранения позиции ViewPager, по которой определяем, грузить данные из ДБ или из интернета
+
     private Context context;
 
     @Nullable
@@ -48,6 +50,9 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
 //        Log.d(PokemonApplication.TAG, "onCreateView");
         navigator = (MainActivity)getActivity();
         context = this.getActivity();
+
+        this.position = getArguments().getInt("position");
+
         initView(view);
         return view;
     }
@@ -93,7 +98,7 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
             }
         });
 
-        presenterPokemonList.viewIsReady(this);
+        presenterPokemonList.viewIsReady(this, this.position);
     }
 
     @Override
@@ -136,4 +141,5 @@ public class PokemonListFragment extends Fragment implements IViewPokemonList, I
 
         navigator.navigateTo(MainActivity.POKEMON_ABOUT_FRAGMENT, bundle);
     }
+
 }

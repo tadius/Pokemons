@@ -145,6 +145,40 @@ public class RepositoryPokemonList implements IRepositoryPokemonList {
 
     }
 
+    @Override
+    public void getDataFromDatabase(String pokemonName, Context context, IOnDataGotListener listener) {
+        this.onDataGotListener = listener;
+        PokemonsDBManager dbManager = new PokemonsDBManager(context);
+
+        io.reactivex.Observable.just(dbManager.getPokemonByName(pokemonName))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Pokemon>() {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Pokemon pokemon) {
+                        Log.d(PokemonApplication.TAG, "Pokemon is already in DataBase");
+                        onDataGotListener.onDataGotCallback(pokemon);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // Network error
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
+
     private void loadRXPokemonListFromNetwork(){
         PokeapiService apiService = ApiClient.getClient()
                 .create(PokeapiService.class);

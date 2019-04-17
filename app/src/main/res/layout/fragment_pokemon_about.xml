@@ -1,108 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/llPictures"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
-
-
-        <ImageView
-            android:id="@+id/ivPokemonPictureAbout"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="4dp" />
-
-        <ImageView
-            android:id="@+id/ivPokemonPictureBackAbout"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="4dp" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvPokemonNameAbout"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/llPictures"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:text="@string/Loading"
-        android:textAllCaps="true" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/ibSaveToDB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:srcCompat="@android:drawable/ic_menu_save" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvPokemonNameAbout"
-        android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/llStatsAbout"
-            android:layout_weight="1"
+            android:id="@+id/llPictures"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/ivPokemonPictureAbout"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="4dp" />
+
+            <ImageView
+                android:id="@+id/ivPokemonPictureBackAbout"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="4dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvPokemonNameAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_below="@+id/llPictures"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="@string/Loading"
+            android:textAllCaps="true" />
 
-            <TextView
-                android:id="@+id/tvStatsHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/stats"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-            <TextView
-                android:id="@+id/tvStats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/Loading" />
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/ibSaveToDB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="#00000000"
+            app:srcCompat="@drawable/ic_save" />
 
         <LinearLayout
-            android:id="@+id/llAbilitiesAbout"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_below="@+id/tvPokemonNameAbout"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvAbilitiesHeader"
+            <LinearLayout
+                android:id="@+id/llStatsAbout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/abilities"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tvAbilities"
+                <TextView
+                    android:id="@+id/tvStatsHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stats"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                <TextView
+                    android:id="@+id/tvStats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Loading" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llAbilitiesAbout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Loading" />
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvAbilitiesHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/abilities"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                <TextView
+                    android:id="@+id/tvAbilities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Loading" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>

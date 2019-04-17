@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvPokemonList"
         android:layout_width="match_parent"

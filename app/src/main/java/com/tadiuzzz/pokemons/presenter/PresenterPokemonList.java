@@ -15,6 +15,7 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
     private IRepositoryPokemonList repository;
     private boolean isLoading = false;
     private int offset;
+    private int position;
 
     public PresenterPokemonList() {
 //        Log.d(PokemonApplication.TAG, "PresenterPokemonList");
@@ -22,19 +23,31 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
         repository = new RepositoryPokemonList();
     }
 
-    private void loadData() {
+    private void loadDataFromInternet() {
 //        Log.d(PokemonApplication.TAG, "loadData");
         isLoading = true;
         view.setRefreshing(isLoading);
-//        repository.getData(offset, this);
+        repository.getData(offset, this);
+    }
+
+    private void loadDataFromDb() {
         repository.getDataFromDatabase(view.getContext(), this);
     }
 
     @Override
-    public void viewIsReady(IViewPokemonList view) {
+    public void viewIsReady(IViewPokemonList view, int position) {
 //        Log.d(PokemonApplication.TAG, "viewIsReady");
         this.view = view;
-        loadData();
+        this.position = position;
+
+        switch (this.position) {
+            case 1:
+                loadDataFromInternet();
+                break;
+            case 2:
+                loadDataFromDb();
+
+        }
     }
 
     @Override
@@ -45,16 +58,18 @@ public class PresenterPokemonList implements IPresenterPokemonList, IOnEndSettin
     @Override
     public void onScrolled(GridLayoutManager layoutManager) {
 //        Log.d(PokemonApplication.TAG, "onScrolled");
-        int visibleItemCount = layoutManager.getChildCount();
-        int totalItemCount = layoutManager.getItemCount();
-        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+        if (position == 1) {
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+            int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-        if (!isLoading) {
-            if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                    && firstVisibleItemPosition >= 0
-                    && totalItemCount >= offset) {
-                offset += 20;
-                loadData();
+            if (!isLoading) {
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0
+                        && totalItemCount >= offset) {
+                    offset += 20;
+                    loadDataFromInternet();
+                }
             }
         }
     }

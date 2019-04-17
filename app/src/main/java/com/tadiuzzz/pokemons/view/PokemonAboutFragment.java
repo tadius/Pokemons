@@ -32,7 +32,7 @@ import com.tadiuzzz.pokemons.presenter.PresenterPokemonList;
 
 import java.util.ArrayList;
 
-public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
+public class PokemonAboutFragment extends Fragment implements IViewPokemonAbout {
 
     private IPresenterPokemonAbout presenterPokemonAbout;
     private ImageView ivPokemonPictureAbout;
@@ -46,6 +46,9 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
     private int dbId;
 
     private Context context;
+
+    private final int ICON_SAVE = 1;
+    private final int ICON_DELETE = 2;
 
     @Nullable
     @Override
@@ -140,13 +143,15 @@ public class PokemonAboutFragment extends Fragment implements IViewPokemonList {
     }
 
     @Override
-    public void setViewData(ArrayList<Pokemon> pokemons, IOnEndSettingUpViewListener listener) {
-
-    }
-
-    @Override
-    public void setRefreshing(boolean isRefreshing) {
-//        Log.d(PokemonApplication.TAG, "setRefreshing");
+    public void setImageButtonIcon(int type) {
+        switch (type){
+            case ICON_SAVE:
+                ibSaveToDB.setImageResource(R.drawable.ic_save);
+                break;
+            case ICON_DELETE:
+                ibSaveToDB.setImageResource(R.drawable.ic_cancel);
+                break;
+        }
     }
 
     @Override

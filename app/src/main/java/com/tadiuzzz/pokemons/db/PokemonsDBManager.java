@@ -67,8 +67,8 @@ public class PokemonsDBManager {
 //    **** Получить покемона по ID
 //    **************************
 
-    public Pokemon getPokemonByPokemonId(int pokemonId){
-        PokemonCursorWrapper cursor = queryPokemons(PokemonsDbSchema.PokemonsTable.Cols.ID+ " = ?", new String[]{String.valueOf(pokemonId)}, null);
+    public Pokemon getPokemonByPokemonId(int pokemonId) {
+        PokemonCursorWrapper cursor = queryPokemons(PokemonsDbSchema.PokemonsTable.Cols.ID + " = ?", new String[]{String.valueOf(pokemonId)}, null);
         Pokemon pokemon = null;
 
         try {
@@ -94,7 +94,7 @@ public class PokemonsDBManager {
 
     public Pokemon getPokemonById(int pokemonId) {
         PokemonCursorWrapper cursor = queryPokemons("_id = ?", new String[]{String.valueOf(pokemonId)}, null);
-        Pokemon pokemon = null;
+        Pokemon pokemon = new Pokemon(); // иначе, если в базе нет такой записи, RxJava выдает NPE
 
         try {
             cursor.moveToFirst();
@@ -110,6 +110,33 @@ public class PokemonsDBManager {
                 pokemon.getPokemonCharacteristics().setStats(stats);
 
                 cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return pokemon;
+    }
+
+    public Pokemon getPokemonByName(String pokemonName) {
+        PokemonCursorWrapper cursor = queryPokemons(PokemonsDbSchema.PokemonsTable.Cols.NAMEOFPOKEMON + " = ?", new String[]{pokemonName}, null);
+//        Pokemon pokemon = null;
+        Pokemon pokemon = new Pokemon(); // иначе, если в базе нет такой записи, RxJava выдает NPE
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                pokemon = cursor.getPokemon();
+
+                ArrayList<Abilities> abilities = new ArrayList<Abilities>();
+                abilities.addAll(getAbilitieByPokemonId(pokemon.getPokemonCharacteristics().getId()));
+                pokemon.getPokemonCharacteristics().setAbilities(abilities);
+
+                ArrayList<Stats> stats = new ArrayList<Stats>();
+                stats.addAll(getStatsByPokemonId(pokemon.getPokemonCharacteristics().getId()));
+                pokemon.getPokemonCharacteristics().setStats(stats);
+
+                cursor.moveToNext();
+
             }
         } finally {
             cursor.close();
@@ -156,7 +183,7 @@ public class PokemonsDBManager {
     }
 //    ******************************************************************
 
-//    *******************
+    //    *******************
 //    **** Получить Abilities по PokemonId
 //    *******************
     public ArrayList<Abilities> getAbilitieByPokemonId(int pokemonId) {
@@ -176,7 +203,7 @@ public class PokemonsDBManager {
         return allAbilities;
     }
 
-//    *******************
+    //    *******************
 //    **** Получить Stats по PokemonId
 //    *******************
     public ArrayList<Stats> getStatsByPokemonId(int pokemonId) {

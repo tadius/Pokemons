@@ -7,7 +7,7 @@ import com.tadiuzzz.pokemons.view.IViewPokemonList;
 
 public interface IPresenterPokemonList {
 
-    void viewIsReady(IViewPokemonList view);
+    void viewIsReady(IViewPokemonList view, int position);
 
     void onSwipeRefresh();
 
